@@ -1,6 +1,7 @@
 package com.devsuperior.cursospring.services;
 
 import com.devsuperior.cursospring.domain.Categoria;
+import com.devsuperior.cursospring.exceptions.ObjectNotFoundException;
 import com.devsuperior.cursospring.repositories.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,8 @@ public class CategoriaService {
         return resposta;
     }
     public Optional<Categoria> findById(Integer id){
-        Optional<Categoria> obj=repository.findById(id);
-        return obj;
-
+        Optional<Categoria> obj = repository.findById(id);
+        return Optional.ofNullable(obj.orElseThrow(() -> new ObjectNotFoundException(
+                "Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName())));
     }
 }
