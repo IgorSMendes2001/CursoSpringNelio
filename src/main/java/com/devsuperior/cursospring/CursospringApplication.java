@@ -1,8 +1,12 @@
 package com.devsuperior.cursospring;
 
 import com.devsuperior.cursospring.domain.Categoria;
+import com.devsuperior.cursospring.domain.Cidade;
+import com.devsuperior.cursospring.domain.Estado;
 import com.devsuperior.cursospring.domain.Produto;
 import com.devsuperior.cursospring.repositories.CategoriaRepository;
+import com.devsuperior.cursospring.repositories.CidadeRepository;
+import com.devsuperior.cursospring.repositories.EstadoRepository;
 import com.devsuperior.cursospring.repositories.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -20,7 +24,10 @@ public class CursospringApplication implements CommandLineRunner {
 	public static void main(String[] args) {
 		SpringApplication.run(CursospringApplication.class, args);
 	}
-
+	@Autowired
+	private EstadoRepository estadoRepository;
+	@Autowired
+	private CidadeRepository cidadeRepository;
 	@Override
 	public void run(String... args) throws Exception {
 		Categoria cat1=new Categoria(null,"Informática");
@@ -36,6 +43,16 @@ public class CursospringApplication implements CommandLineRunner {
 		prod3.getCategorias().addAll(Arrays.asList(cat1));
 		repository.saveAll(Arrays.asList(cat1,cat2));
 		produtoRepository.saveAll(Arrays.asList(prod1,prod2,prod3));
+
+		Estado est1=new Estado(null,"Minas Gerais");
+		Estado est2=new Estado(null,"São Paulo");
+		Cidade c1=new Cidade(null,"Patos de Minas",est1);
+		Cidade c2=new Cidade(null,"São Paulo",est2);
+		Cidade c3=new Cidade(null,"Campinas",est2);
+		est1.getCidades().addAll(Arrays.asList(c1));
+		est2.getCidades().addAll(Arrays.asList(c2,c3));
+		estadoRepository.saveAll(Arrays.asList(est1,est2));
+		cidadeRepository.saveAll(Arrays.asList(c1,c2,c3));
 
 	}
 }
