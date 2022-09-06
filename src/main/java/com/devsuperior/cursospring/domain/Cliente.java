@@ -1,6 +1,7 @@
 package com.devsuperior.cursospring.domain;
 
 import com.devsuperior.cursospring.domain.enuns.TipoCliente;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ public class Cliente implements Serializable {
     private String email;
     private String cpfcnpj;
     private Integer tipoCliente;
+    @JsonBackReference
     @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos = new ArrayList<>();
 

@@ -1,6 +1,7 @@
 package com.devsuperior.cursospring.domain;
 
 import com.devsuperior.cursospring.domain.enuns.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
