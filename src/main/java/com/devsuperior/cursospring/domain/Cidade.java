@@ -1,7 +1,4 @@
 package com.devsuperior.cursospring.domain;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -12,7 +9,6 @@ private static final long serialVersionUID=1l;
 @Id
 private Integer id;
 private String nome;
-@JsonManagedReference
 @ManyToOne @JoinColumn(name = "estado_id")
 private Estado estado;
 
