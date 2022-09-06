@@ -18,7 +18,7 @@ public class CategoriaResources {
     private CategoriaService service;
     @GetMapping
     public List<Categoria> listarTodos(){
-        List<Categoria>lista=service.buscar();
+        List<Categoria>lista=service.findAll();
         return lista;
     }
     @GetMapping(value = "/{id}")
@@ -31,5 +31,11 @@ public class CategoriaResources {
         obj = service.insert(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).build();
+    }
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Void> update(@RequestBody Categoria obj,@PathVariable Integer id){
+        obj.setId(id);
+        obj = service.update(obj);
+        return ResponseEntity.noContent().build();
     }
 }

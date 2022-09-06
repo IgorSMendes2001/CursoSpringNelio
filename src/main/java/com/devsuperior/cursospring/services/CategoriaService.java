@@ -13,8 +13,8 @@ import java.util.Optional;
 public class CategoriaService {
     @Autowired
     private CategoriaRepository repository;
-    public List<Categoria> buscar(){
-        List<Categoria> resposta=repository.findAll();
+    public List<Categoria> findAll() {
+        List<Categoria> resposta = repository.findAll();
         return resposta;
     }
     public Optional<Categoria> findById(Integer id){
@@ -24,6 +24,10 @@ public class CategoriaService {
     }
     public Categoria insert(Categoria obj){
         obj.setId(null);
+        return repository.save(obj);
+    }
+    public Categoria update(Categoria obj){
+        findById(obj.getId());
         return repository.save(obj);
     }
 }
