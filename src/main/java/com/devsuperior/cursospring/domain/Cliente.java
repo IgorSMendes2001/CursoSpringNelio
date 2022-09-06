@@ -15,6 +15,10 @@ public class Cliente implements Serializable {
     private String email;
     private String cpfcnpj;
     private Integer tipoCliente;
+    @OneToMany(mappedBy = "cliente")
+    private List<Pedido> pedidos = new ArrayList<>();
+
+
     @JsonManagedReference
     @OneToMany(mappedBy = "cliente")
     private List<Endereco> enderecos=new ArrayList<>();
@@ -88,6 +92,15 @@ public class Cliente implements Serializable {
     public void setTelefones(Set<String> telefones) {
         this.telefones = telefones;
     }
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
+    }
+
 
     @Override
     public boolean equals(Object o) {
