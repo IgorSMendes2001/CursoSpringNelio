@@ -2,6 +2,7 @@ package com.devsuperior.cursospring.resources;
 
 import com.devsuperior.cursospring.domain.Cliente;
 import com.devsuperior.cursospring.dto.ClienteDTO;
+import com.devsuperior.cursospring.dto.ClienteNewDTO;
 import com.devsuperior.cursospring.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -39,10 +40,10 @@ public class ClienteResource {
         return ResponseEntity.ok().body(response);
     }
     @PostMapping()
-    public ResponseEntity<Void> insert(@Valid @RequestBody ClienteDTO objDTO){
+    public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDTO){
         Cliente obj = service.fromDTO(objDTO);
         obj = service.insert(obj);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(objDTO.getId()).toUri();
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
     @PutMapping(value = "/{id}")
