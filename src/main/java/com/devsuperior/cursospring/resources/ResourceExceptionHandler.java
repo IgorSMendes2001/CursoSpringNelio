@@ -1,9 +1,13 @@
 package com.devsuperior.cursospring.resources;
 
 import com.devsuperior.cursospring.exceptions.DataIntegrityException;
+import com.devsuperior.cursospring.exceptions.FieldMessage;
 import com.devsuperior.cursospring.exceptions.ObjectNotFoundException;
+import com.devsuperior.cursospring.exceptions.ValidationErrorDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -19,6 +23,14 @@ public ResponseEntity<ErroDTO>objectNotFound(ObjectNotFoundException exception, 
 @ExceptionHandler(DataIntegrityException.class)
     public ResponseEntity<ErroDTO>dataIntegrity(DataIntegrityException exception, HttpServletRequest httpServletRequest){
         ErroDTO erroDTO=new ErroDTO(HttpStatus.BAD_REQUEST.value(), exception.getMessage(),System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erroDTO);
+    }
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ValidationErrorDTO>mathodArgument(MethodArgumentNotValidException exception, HttpServletRequest httpServletRequest) {
+        ValidationErrorDTO erroDTO = new ValidationErrorDTO(HttpStatus.BAD_REQUEST.value(), "Erro de Validação", System.currentTimeMillis());
+       for (FieldError x: exception.getBindingResult().getFieldErrors()){
+           erroDTO.addError(x.getField(),x.getDefaultMessage());
+       }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erroDTO);
     }
 }
