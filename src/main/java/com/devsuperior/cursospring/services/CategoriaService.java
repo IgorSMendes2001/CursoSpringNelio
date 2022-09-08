@@ -6,6 +6,9 @@ import com.devsuperior.cursospring.exceptions.ObjectNotFoundException;
 import com.devsuperior.cursospring.repositories.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +22,11 @@ public class CategoriaService {
     public List<Categoria> findAll() {
         List<Categoria> resposta = repository.findAll();
         return resposta;
+    }
+    public Page<Categoria> findPage(Integer page,Integer linesPerPage,String orderBy,String direction){
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction),
+                orderBy);
+        return repository.findAll(pageRequest);
     }
     public Optional<Categoria> findById(Integer id){
         Optional<Categoria> obj = repository.findById(id);
