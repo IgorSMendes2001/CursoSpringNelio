@@ -1,6 +1,7 @@
 package com.devsuperior.cursospring.services;
 
 import com.devsuperior.cursospring.domain.Categoria;
+import com.devsuperior.cursospring.dto.CategoriaDTO;
 import com.devsuperior.cursospring.exceptions.DataIntegrityException;
 import com.devsuperior.cursospring.exceptions.ObjectNotFoundException;
 import com.devsuperior.cursospring.repositories.CategoriaRepository;
@@ -48,5 +49,8 @@ public class CategoriaService {
         }catch (DataIntegrityViolationException e){
             throw new DataIntegrityException("Não é possível excluir uma categoria que possui vínculos com produtos!");
         }
+    }
+    public Categoria fromDTO(CategoriaDTO objDTO){
+        return new Categoria(objDTO.getId(),objDTO.getNome());
     }
 }
