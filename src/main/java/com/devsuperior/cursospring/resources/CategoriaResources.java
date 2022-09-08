@@ -34,8 +34,8 @@ public class CategoriaResources {
         return ResponseEntity.ok().body(listDto);
     }
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Optional<Categoria>> findById(@PathVariable Integer id){
-        Optional<Categoria> response=service.findById(id);
+    public ResponseEntity<Categoria> findById(@PathVariable Integer id){
+        Categoria response=service.findById(id);
         return ResponseEntity.ok().body(response);
     }
     @PostMapping()
