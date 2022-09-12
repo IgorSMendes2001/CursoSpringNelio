@@ -1,4 +1,4 @@
-package com.devsuperior.cursospring.domain.config;
+package com.devsuperior.cursospring.config;
 
 import com.devsuperior.cursospring.domain.PagamentoComBoleto;
 import com.devsuperior.cursospring.domain.PagamentoComCartao;
