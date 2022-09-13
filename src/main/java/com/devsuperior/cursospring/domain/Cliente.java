@@ -1,11 +1,14 @@
 package com.devsuperior.cursospring.domain;
 
+import com.devsuperior.cursospring.domain.enuns.Perfil;
 import com.devsuperior.cursospring.domain.enuns.TipoCliente;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
+
 @Entity
 public class Cliente implements Serializable {
     private static final long serialVersionUID=1L;
@@ -22,15 +25,16 @@ public class Cliente implements Serializable {
     @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos = new ArrayList<>();
 
-
-
     @OneToMany(mappedBy = "cliente",cascade = CascadeType.ALL)
     private List<Endereco> enderecos=new ArrayList<>();
     @ElementCollection
     @CollectionTable(name = "TELEFONE")
     private Set<String> telefones=new HashSet<>();
+    @ElementCollection
+    @CollectionTable(name = "PERFIL")
+    private Set<Integer> perfis = new HashSet<>();
     public Cliente(){
-
+        addPerfil(Perfil.CLIENTE);
     }
 
     public Cliente(Integer id, String nome, String email, String cpfcnpj, TipoCliente tipoCliente, String senha) {
@@ -40,6 +44,7 @@ public class Cliente implements Serializable {
         this.cpfcnpj = cpfcnpj;
         this.tipoCliente = (tipoCliente==null)? null: tipoCliente.getCod();
         this.senha=senha;
+        addPerfil(Perfil.CLIENTE);
     }
 
     public Integer getId() {
@@ -114,6 +119,12 @@ public class Cliente implements Serializable {
         this.senha = senha;
     }
 
+    public Set<Perfil>getPerfis(){
+        return perfis.stream().map(x->Perfil.toEnum(x)).collect(Collectors.toSet());
+    }
+    public void addPerfil(Perfil perfil){
+        perfis.add(perfil.getCod());
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

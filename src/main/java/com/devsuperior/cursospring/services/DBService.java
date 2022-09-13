@@ -2,6 +2,7 @@ package com.devsuperior.cursospring.services;
 
 import com.devsuperior.cursospring.domain.*;
 import com.devsuperior.cursospring.domain.enuns.EstadoPagamento;
+import com.devsuperior.cursospring.domain.enuns.Perfil;
 import com.devsuperior.cursospring.domain.enuns.TipoCliente;
 import com.devsuperior.cursospring.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,7 +88,7 @@ public class DBService {
 
         Cidade c1 = new Cidade(null, "Uberlândia", est1);
         Cidade c2 = new Cidade(null, "São Paulo", est2);
-        Cidade c3 = new Cidade(null, "Campinas", est2);
+        Cidade c3 = new Cidade(null, "Patos de Minas", est1);
 
         est1.getCidades().addAll(Arrays.asList(c1));
         est2.getCidades().addAll(Arrays.asList(c2, c3));
@@ -104,8 +105,14 @@ public class DBService {
 
         cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
 
-        clienteRepository.saveAll(Arrays.asList(cli1));
-        enderecoRepository.saveAll(Arrays.asList(e1, e2));
+        Cliente cli2 = new Cliente(null, "Igor Mendes", "igor07082001@gmail.com", "15703085608", TipoCliente.PESSOAFISICA,passwordEncoder.encode("123456"));
+        cli2.addPerfil(Perfil.ADMN);
+        cli2.getTelefones().addAll(Arrays.asList("34999785080","938383"));
+        Endereco e3 = new Endereco(null, "Rua Padre Alaor", "619", "Apto 301", "Centro", "38700162", cli2, c3);
+        cli2.getEnderecos().addAll(Arrays.asList(e3));
+
+        clienteRepository.saveAll(Arrays.asList(cli1,cli2));
+        enderecoRepository.saveAll(Arrays.asList(e1, e2,e3));
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
