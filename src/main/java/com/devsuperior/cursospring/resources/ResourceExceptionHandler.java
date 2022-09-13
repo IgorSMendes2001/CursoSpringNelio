@@ -1,9 +1,6 @@
 package com.devsuperior.cursospring.resources;
 
-import com.devsuperior.cursospring.exceptions.DataIntegrityException;
-import com.devsuperior.cursospring.exceptions.FieldMessage;
-import com.devsuperior.cursospring.exceptions.ObjectNotFoundException;
-import com.devsuperior.cursospring.exceptions.ValidationErrorDTO;
+import com.devsuperior.cursospring.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -32,5 +29,11 @@ public ResponseEntity<ErroDTO>objectNotFound(ObjectNotFoundException exception, 
            erroDTO.addError(x.getField(),x.getDefaultMessage());
        }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erroDTO);
+    }
+    @ExceptionHandler(AuthorizationException.class)
+    public ResponseEntity<ErroDTO> authorization(AuthorizationException e, HttpServletRequest request) {
+
+        ErroDTO err = new ErroDTO(HttpStatus.FORBIDDEN.value(), e.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
     }
 }

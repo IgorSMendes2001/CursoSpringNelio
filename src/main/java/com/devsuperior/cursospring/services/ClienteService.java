@@ -3,14 +3,17 @@ package com.devsuperior.cursospring.services;
 import com.devsuperior.cursospring.domain.Cidade;
 import com.devsuperior.cursospring.domain.Cliente;
 import com.devsuperior.cursospring.domain.Endereco;
+import com.devsuperior.cursospring.domain.enuns.Perfil;
 import com.devsuperior.cursospring.domain.enuns.TipoCliente;
 import com.devsuperior.cursospring.dto.ClienteDTO;
 import com.devsuperior.cursospring.dto.ClienteNewDTO;
+import com.devsuperior.cursospring.exceptions.AuthorizationException;
 import com.devsuperior.cursospring.exceptions.DataIntegrityException;
 import com.devsuperior.cursospring.exceptions.ObjectNotFoundException;
 import com.devsuperior.cursospring.repositories.CidadeRepository;
 import com.devsuperior.cursospring.repositories.ClienteRepository;
 import com.devsuperior.cursospring.repositories.EnderecoRepository;
+import com.devsuperior.cursospring.security.UserSS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -42,6 +45,10 @@ public class ClienteService {
         return repository.findAll(pageRequest);
     }
     public Cliente findById(Integer id){
+        UserSS user = UserService.authenticated();
+        if (user==null || !user.hasRole(Perfil.ADMN) && !id.equals(user.getId())) {
+            throw new AuthorizationException("Acesso negado");
+        }
         Cliente obj = repository.findById(id).get();
        if(obj==null){
            throw new ObjectNotFoundException("Objeto não encontrado! Id: "+ id + ",Tipo: " + Cliente.class.getName());
