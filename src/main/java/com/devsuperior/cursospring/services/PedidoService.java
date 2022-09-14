@@ -3,12 +3,17 @@ package com.devsuperior.cursospring.services;
 import com.devsuperior.cursospring.domain.*;
 import com.devsuperior.cursospring.domain.Pedido;
 import com.devsuperior.cursospring.domain.enuns.EstadoPagamento;
+import com.devsuperior.cursospring.exceptions.AuthorizationException;
 import com.devsuperior.cursospring.exceptions.ObjectNotFoundException;
 import com.devsuperior.cursospring.repositories.ItemPedidoRepository;
 import com.devsuperior.cursospring.repositories.PagamentoRepository;
 import com.devsuperior.cursospring.repositories.PedidoRepository;
+import com.devsuperior.cursospring.security.UserSS;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -63,5 +68,14 @@ public class PedidoService {
         itemPedidoRepository.saveAll(obj.getItens());
         emailService.sendOrderConfirmationEmail(obj);
         return obj;
+    }
+    public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+        UserSS user = UserService.authenticated();
+        if (user == null) {
+            throw new AuthorizationException("Acesso negado");
+        }
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        Cliente cliente =  clienteService.findById(user.getId());
+        return repository.findByCliente(cliente, pageRequest);
     }
 }
