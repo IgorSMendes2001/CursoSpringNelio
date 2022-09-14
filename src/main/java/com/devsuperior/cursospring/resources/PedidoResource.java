@@ -38,7 +38,7 @@ public class PedidoResource {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
-    @RequestMapping(method=RequestMethod.GET)
+    @GetMapping("/page")
     public ResponseEntity<Page<Pedido>> findPage(
             @RequestParam(value="page", defaultValue="0") Integer page,
             @RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage,

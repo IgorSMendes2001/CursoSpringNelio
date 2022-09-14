@@ -21,6 +21,7 @@ public class JWTAuthenticatorFilter extends UsernamePasswordAuthenticationFilter
 
     private AuthenticationManager authenticationManager;
 
+
     private JWTUtil jwtUtil;
 
     public JWTAuthenticatorFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
